@@ -1,0 +1,31 @@
+<html>
+<head>
+<title>g0v shorten url service</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-csv/1.0.21/jquery.csv.min.js" integrity="sha512-Y8iWYJDo6HiTo5xtml1g4QqHtl/PO1w+dmUpQfQSOTqKNsMhExfyPN2ncNAe9JuJUSKzwK/b6oaNPop4MXzkwg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</head>
+<body>
+g0v shorten url service, redirecting
+<script>
+var terms = document.location.pathname.split('/');
+id = terms[terms.length - 1];
+$.get('list.csv', function(content) {
+    var data = $.csv.toObjects(content);
+    var hit = false;
+    for (var i = 0; i < data.length; i++) {
+        if (data[i].id != id) {
+            continue;
+        }
+        var url = data[i].url;
+        hit = true;
+        document.location.href = url;
+        break;
+    }
+    if (!hit) {
+        document.write('404 Not Found');
+    }
+}, 'text');
+
+</script>
+</body>
+</html>
